@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace VisitorManagement.Models
+namespace VisitorManagement.Data
 {
     /// <summary>
     /// Represents one specific customer
     /// </summary>
-    public class Customer
+    public class CustomerData
     {
-        /// <summary>
-        /// Id
-        /// </summary>
-        public long Id { get; set; }
         /// <summary>
         /// Customer Name
         /// </summary>
@@ -23,11 +19,11 @@ namespace VisitorManagement.Models
         /// </summary>
         public string Address { get; set; }
         /// <summary>
-        /// Customer Contact number
+        /// Customer contact number
         /// </summary>
         public string ContactNumber { get; set; }
         /// <summary>
-        /// Customer Country
+        /// Customer country
         /// </summary>
         public string Country { get; set; }
     }

@@ -4,13 +4,13 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 
-namespace DemoVisitorManagement.Data
+namespace VisitorManagement.Data
 {
     public static class ConnectionStringHelper
     {
-        public static string GetConnectionString(string name)
+        public static string GetConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return ConfigurationManager.ConnectionStrings["VisitorRepository"].ConnectionString;
         }
     }
 }

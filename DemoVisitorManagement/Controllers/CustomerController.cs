@@ -1,39 +1,75 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using VisitorManagement.Data;
+using VisitorManagement.Data.Services;
 using VisitorManagement.Models;
 
-namespace DemoVisitorManagement.Controllers
+namespace VisitorManagement.Controllers
 {
+    /// <summary>
+    /// Welcome to visitor management system
+    /// </summary>
     public class CustomerController : ApiController
     {
-        DataAccess db = new DataAccess();
 
+        private ICustomerService _service;
+
+        public CustomerController(ICustomerService service)
+        {
+            _service = service;
+        }
+
+        /// <summary>
+        /// Gets the list of all customers in the DB
+        /// </summary>
+        /// <returns>list of all customers</returns>
         // GET: api/Customer
-        public IEnumerable<Customer> Get()
+        public async Task<IEnumerable<Customer>> Get()
         {
-            return db.GetCustomers( string.Empty);
+            return await _service.GetCustomers(string.Empty);
         }
 
+        /// <summary>
+        /// Gets the list of customers with similar input name
+        /// </summary>
+        /// <param name="customerName"></param>
+        /// <returns></returns>
         // GET: api/Customer/CustomerName
-        public IEnumerable<Customer> Get(string customerName)
+        public async Task<IEnumerable<Customer>> Get(string customerName)
         {
-            return db.GetCustomers(customerName);
+            return await _service.GetCustomers(customerName);
         }
 
+        /// <summary>
+        /// Insert a new customer into the DB
+        /// </summary>
+        /// <param name="customers"></param>
         // POST: api/Customer
-        public void Post([FromBody]string value)
+        public void Post([FromBody] IEnumerable<CustomerData> customers)
         {
+            _service.InsertCustomers(customers);
         }
 
+        /// <summary>
+        /// Update Existing customer with provided customer Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
         // PUT: api/Customer/5
-        public void Put(int id, [FromBody]string value)
+        public void Put([FromBody] IEnumerable<Customer> customers)
         {
+            _service.UpdateCustomers(customers);
         }
 
+        /// <summary>
+        /// Delete a paticular customer
+        /// </summary>
+        /// <param name="id"></param>
         // DELETE: api/Customer/5
-        public void Delete(int id)
+        public void Delete(IEnumerable<long> customerIds)
         {
+            _service.DeleteCustomers(customerIds);
         }
     }
 }
