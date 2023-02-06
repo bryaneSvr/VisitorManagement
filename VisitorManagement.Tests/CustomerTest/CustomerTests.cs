@@ -60,7 +60,7 @@ namespace VisitorManagement.Tests.CustomerTest
             {
                 mock.Mock<IDataAccess>()
                     .Setup(x => x.UpdateCustomers(CustomerDataSetup.Customers))
-                    .Returns("1");
+                    .Returns(records);
 
                 var cls = mock.Create<CustomerService>();
 
