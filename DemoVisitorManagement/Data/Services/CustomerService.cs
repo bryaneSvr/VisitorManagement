@@ -1,9 +1,6 @@
-﻿using Microsoft.Ajax.Utilities;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using VisitorManagement.Data.Caching;
 using VisitorManagement.Models;
 
@@ -23,7 +20,7 @@ namespace VisitorManagement.Data.Services
         public async Task<List<Customer>> GetCustomers(string customerName)
         {
             if(string.IsNullOrEmpty(customerName))
-                customerName= "_";
+                customerName= Messages.DefaultGetKey;
             var cacheData = _cache.Get(customerName);
             if (cacheData != null)
                 return (List<Customer>)cacheData;
@@ -36,22 +33,43 @@ namespace VisitorManagement.Data.Services
             return result;
         }
 
-        public void InsertCustomers(IEnumerable<CustomerData> customers)
+        public string InsertCustomers(IEnumerable<CustomerData> customers)
         {
-            _dataAccess.InsertCustomers(customers);
+            if (!customers.Any()) { return Messages.EmptyInput; }
+
+            string data = _dataAccess.InsertCustomers(customers);
             _cache.Remove();
+
+            string records = string.IsNullOrEmpty(data) ? Messages.OperationFailed : data;
+
+            var result = GetMessage.Inserted(records);
+            return result;
         }
 
-        public void UpdateCustomers(IEnumerable<Customer> customers)
+        public string UpdateCustomers(IEnumerable<Customer> customers)
         {
-            _dataAccess.UpdateCustomers(customers);
+            if (!customers.Any()) { return Messages.EmptyInput; }
+
+            string data = _dataAccess.UpdateCustomers(customers);
             _cache.Remove();
+
+            string records = string.IsNullOrEmpty(data) ? Messages.OperationFailed : data;
+
+            var result = GetMessage.Updated(records);
+            return result;
         }
 
-        public void DeleteCustomers(IEnumerable<long> customerIds)
+        public string DeleteCustomers(IEnumerable<long> customerIds)
         {
-            _dataAccess.DeleteCustomers(customerIds);
+            if (!customerIds.Any()) { return Messages.EmptyInput; }
+
+            var data = _dataAccess.DeleteCustomers(customerIds);
             _cache.Remove();
+
+            string records = string.IsNullOrEmpty(data) ? Messages.OperationFailed : data;
+
+            var result = GetMessage.Deleted(records);
+            return result;
         }
     }
 }

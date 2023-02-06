@@ -46,9 +46,9 @@ namespace VisitorManagement.Controllers
         /// </summary>
         /// <param name="customers"></param>
         // POST: api/Customer
-        public void Post([FromBody] IEnumerable<CustomerData> customers)
+        public string Post([FromBody] IEnumerable<CustomerData> customers)
         {
-            _service.InsertCustomers(customers);
+            return _service.InsertCustomers(customers);
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace VisitorManagement.Controllers
         /// <param name="id"></param>
         /// <param name="value"></param>
         // PUT: api/Customer/5
-        public void Put([FromBody] IEnumerable<Customer> customers)
+        public string Put([FromBody] IEnumerable<Customer> customers)
         {
-            _service.UpdateCustomers(customers);
+            return _service.UpdateCustomers(customers);
         }
 
         /// <summary>
@@ -67,9 +67,9 @@ namespace VisitorManagement.Controllers
         /// </summary>
         /// <param name="id"></param>
         // DELETE: api/Customer/5
-        public void Delete(IEnumerable<long> customerIds)
+        public string Delete(IEnumerable<long> customerIds)
         {
-            _service.DeleteCustomers(customerIds);
+            return _service.DeleteCustomers(customerIds);
         }
     }
 }

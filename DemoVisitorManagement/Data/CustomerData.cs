@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace VisitorManagement.Data
+﻿namespace VisitorManagement.Data
 {
     /// <summary>
     /// Represents one specific customer

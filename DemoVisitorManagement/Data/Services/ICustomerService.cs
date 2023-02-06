@@ -6,9 +6,9 @@ namespace VisitorManagement.Data.Services
 {
     public interface ICustomerService
     {
-        void DeleteCustomers(IEnumerable<long> customerIds);
+        string DeleteCustomers(IEnumerable<long> customerIds);
         Task<List<Customer>> GetCustomers(string customerName);
-        void InsertCustomers(IEnumerable<CustomerData> customers);
-        void UpdateCustomers(IEnumerable<Customer> customers);
+        string InsertCustomers(IEnumerable<CustomerData> customers);
+        string UpdateCustomers(IEnumerable<Customer> customers);
     }
 }

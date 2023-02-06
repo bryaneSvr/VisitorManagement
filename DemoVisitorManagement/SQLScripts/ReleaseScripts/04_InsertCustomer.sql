@@ -47,5 +47,8 @@ SET NOCOUNT ON;
 			,Country
 		FROM
 			@Customers
+
+	SELECT @@ROWCOUNT;
+
 END
 GO

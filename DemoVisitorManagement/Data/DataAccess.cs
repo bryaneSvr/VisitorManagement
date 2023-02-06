@@ -1,12 +1,10 @@
 ﻿using VisitorManagement.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
-using VisitorManagement.Data.Services;
+using System;
 
 namespace VisitorManagement.Data
 {
@@ -28,10 +26,8 @@ namespace VisitorManagement.Data
             }
         }
 
-        public void InsertCustomers(IEnumerable<CustomerData> customers)
+        public string InsertCustomers(IEnumerable<CustomerData> customers)
         {
-            if (!customers.Any()) { return; }
-
             DataTable dataTable = new DataTable();
 
             dataTable.Columns.Add(new DataColumn("CustomerName", typeof(string)));
@@ -52,17 +48,17 @@ namespace VisitorManagement.Data
             using (IDbConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
             {
                 var storedProcedure = "dbo.InsertCustomers";
-                connection.Query(storedProcedure, new { Customers = dataTable }, commandType: CommandType.StoredProcedure);
+                var insertCount = connection.Query<string>(storedProcedure, new { Customers = dataTable }, commandType: CommandType.StoredProcedure).ToList();
+
+                return insertCount.FirstOrDefault();
             }
         }
 
-        public void UpdateCustomers(IEnumerable<Customer> customers)
+        public string UpdateCustomers(IEnumerable<Customer> customers)
         {
-            if (!customers.Any()) { return; }
-
             DataTable dataTable = new DataTable();
 
-            //dataTable.Columns.Add(new DataColumn("Id", typeof(Int64)));
+            dataTable.Columns.Add(new DataColumn("Id", typeof(Int64)));
             dataTable.Columns.Add(new DataColumn("CustomerName", typeof(string)));
             dataTable.Columns.Add(new DataColumn("Address", typeof(string)));
             dataTable.Columns.Add(new DataColumn("ContactNumber", typeof(string)));
@@ -71,7 +67,7 @@ namespace VisitorManagement.Data
             foreach (var customer in customers)
             {
                 var row = dataTable.NewRow();
-                //row["Id"] = customer.Id;
+                row["Id"] = customer.Id;
                 row["CustomerName"] = customer.CustomerName;
                 row["Address"] = customer.Address;
                 row["ContactNumber"] = customer.ContactNumber;
@@ -82,14 +78,14 @@ namespace VisitorManagement.Data
             using (IDbConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
             {
                 var storedProcedure = "dbo.UpdateCustomers";
-                connection.Query(storedProcedure, new { Customers = dataTable }, commandType: CommandType.StoredProcedure);
+                var updateCount = connection.Query<string>(storedProcedure, new { Customers = dataTable }, commandType: CommandType.StoredProcedure).ToList();
+
+                return updateCount.FirstOrDefault();
             }
         }
 
-        public void DeleteCustomers(IEnumerable<long> customerIds)
+        public string DeleteCustomers(IEnumerable<long> customerIds)
         {
-            if (!customerIds.Any()) { return; }
-
             DataTable dataTable = new DataTable();
 
             dataTable.Columns.Add(new DataColumn("Id", typeof(string)));
@@ -104,7 +100,9 @@ namespace VisitorManagement.Data
             using (IDbConnection connection = new SqlConnection(ConnectionStringHelper.GetConnectionString()))
             {
                 var storedProcedure = "dbo.DeleteCustomers";
-                connection.Query(storedProcedure, new { Customers = dataTable }, commandType: CommandType.StoredProcedure);
+                var deleteCount = connection.Query<string>(storedProcedure, new { Customers = dataTable }, commandType: CommandType.StoredProcedure).ToList();
+
+                return deleteCount.FirstOrDefault();
             }
         }
     }

@@ -44,5 +44,8 @@ SET NOCOUNT ON;
 			@Customers Customer
 		WHERE
 			Customers.Id = Customer.Id
+
+	SELECT @@ROWCOUNT;
+
 END
 GO

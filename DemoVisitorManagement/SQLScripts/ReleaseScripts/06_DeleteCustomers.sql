@@ -71,5 +71,7 @@ SET NOCOUNT ON;
 				@Customers
 			)
 
+	SELECT @@ROWCOUNT;
+
 END
 GO
